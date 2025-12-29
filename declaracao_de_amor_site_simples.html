@@ -264,8 +264,8 @@
     <div class="heart-lock">
       <span class="lock-icon">🔒</span>
       <h2>Cadeado do Amor</h2>
-      <p>Somente quem tem a chave entra</p>
-      <input type="password" id="password" placeholder="****" />
+      <p>Para desbloquear Digite a senha</p>
+      <input type="password" id="password" placeholder="******" />
       <button onclick="unlock()">Abrir</button>
       <div class="error" id="error">Senha incorreta… tente de novo ❤️</div>
     </div>
@@ -311,7 +311,7 @@
     function unlock() {
       const password = document.getElementById('password').value;
       const error = document.getElementById('error');
-      if (password === '2025') {
+      if (password === '19/12/2025') {
         document.getElementById('lock').style.display = 'none';
         document.getElementById('card').style.display = 'block';
       } else {
