@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Declaração de Amor</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #ff758c, #ffb199);
+      color: #4a1c1c;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* CHUVA DE CORAÇÕES */
+    .heart-rain {
+      position: fixed;
+      top: -10vh;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 20px;
+      animation: fall linear forwards;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    /* FUNDO COM PADRÃO */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.25) 2px, transparent 2px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .lock {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    /* CORAÇÃO CADEADO */
+    .heart-lock {
+      position: relative;
+      width: 260px;
+      height: 230px;
+      background: #ff4f75;
+      transform: rotate(-45deg);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      animation: beat 1.5s infinite;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.08); }
+    }
+
+    .heart-lock::before,
+    .heart-lock::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 230px;
+      background: #ff4f75;
+      border-radius: 50%;
+    }
+
+    .heart-lock::before {
+      top: -115px;
+      left: 0;
+    }
+
+    .heart-lock::after {
+      left: 115px;
+      top: 0;
+    }
+
+    .heart-lock > * {
+      transform: rotate(45deg);
+      z-index: 1;
+      text-align: center;
+    }
+
+    .lock-icon {
+      font-size: 2.8rem;
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1.1rem;
+      width: 120px;
+      text-align: center;
+      border-radius: 8px;
+      border: none;
+      margin-top: 12px;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 10px 22px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 20px;
+      background: white;
+      color: #ff4f75;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #ffe3ea;
+      transform: scale(1.05);
+    }
+
+    .error {
+      color: #ffe3ea;
+      margin-top: 8px;
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    /* CARTA */
+    .card {
+      background: rgba(255, 255, 255, 0.97);
+      max-width: 720px;
+      padding: 45px;
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      display: none;
+      animation: fadeIn 1.2s ease forwards;
+      z-index: 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .heart {
+      font-size: 3rem;
+      animation: pulse 1.5s infinite;
+      color: #ff4f75;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+
+    .music-section {
+      margin: 35px 0;
+    }
+
+    .music-section h2 {
+      color: #ff4f75;
+      margin-bottom: 10px;
+    }
+
+    .qr-container {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .qr-item img {
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+    }
+
+    .qr-item img:hover {
+      transform: scale(1.08);
+    }
+
+    .signature {
+      margin-top: 30px;
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+  
+
+    /* AJUSTES PARA CELULAR */
+    @media (max-width: 600px) {
+      .heart-lock {
+        width: 220px;
+        height: 200px;
+      }
+
+      .heart-lock::before,
+      .heart-lock::after {
+        width: 220px;
+        height: 200px;
+      }
+
+      h1 {
+        font-size: 2.1rem;
+      }
+
+      p {
+        font-size: 1.05rem;
+      }
+
+      .card {
+        padding: 28px;
+        margin: 15px;
+      }
+
+      .qr-container {
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .qr-item img {
+        width: 160px;
+        height: 160px;
+      }
+
+      .music-section h2 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lock" id="lock">
+    <div class="heart-lock">
+      <span class="lock-icon">🔒</span>
+      <h2>Cadeado do Amor</h2>
+      <p>Somente quem tem a chave entra</p>
+      <input type="password" id="password" placeholder="****" />
+      <button onclick="unlock()">Abrir</button>
+      <div class="error" id="error">Senha incorreta… tente de novo ❤️</div>
+    </div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="heart">❤</div>
+    <h1>Para Você</h1>
+    <p>
+      Desde o momento em que você entrou na minha vida, tudo ganhou mais cor,
+      mais sentido e mais alegria. Cada sorriso seu é um motivo a mais para eu
+      acreditar que o amor verdadeiro existe.
+    </p>
+    <p>
+      Este site é simples, mas o sentimento que ele representa é imenso.
+      É a minha forma de dizer que você é especial, única e essencial
+      para mim.
+    </p>
+    <p>
+      Que possamos continuar escrevendo nossa história, dia após dia,
+      com carinho, respeito e muito amor.
+    </p>
+        <div class="music-section">
+      <h2>🎵 Músicas que me lembram você</h2>
+      <p>Escaneie os QR Codes e ouça com o coração.</p>
+      <div class="qr-container">
+        <div class="qr-item">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://open.spotify.com/intl-pt/track/43iIQbw5hx986dUEZbr3eN" alt="QR Code Música 1" />
+        </div>
+        <div class="qr-item">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://open.spotify.com/intl-pt/track/4rHZZAmHpZrA3iH5zx8frV" alt="QR Code Música 2" />
+        </div>
+      </div>
+    </div>
+
+    <div class="signature">
+      Com todo o meu amor,<br />
+      Seu nome
+    </div>
+  </div>
+
+  <script>
+    function unlock() {
+      const password = document.getElementById('password').value;
+      const error = document.getElementById('error');
+      if (password === '2025') {
+        document.getElementById('lock').style.display = 'none';
+        document.getElementById('card').style.display = 'block';
+      } else {
+        error.style.display = 'block';
+      }
+    }
+
+    // GERADOR DE CHUVA DE CORAÇÕES
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart-rain');
+      heart.innerHTML = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+      heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
+
+    setInterval(createHeart, 400);
+  </script>
+
+</body>
+</html>
