@@ -12,9 +12,23 @@
       color: #4a1c1c;
       min-height: 100vh;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      overflow: hidden;
+      overflow-y: auto;
+    }
+
+    /* CHUVA DE FOTOS */
+    .photo-rain {
+      position: fixed;
+      top: -15vh;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 50%;
+      animation: fall linear forwards;
+      z-index: 0;
+      pointer-events: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     }
 
     /* CHUVA DE CORAÇÕES */
@@ -30,7 +44,7 @@
 
     @keyframes fall {
       to {
-        transform: translateY(110vh);
+        transform: translateY(120vh) rotate(360deg);
         opacity: 0;
       }
     }
@@ -51,6 +65,7 @@
       align-items: center;
       justify-content: center;
       z-index: 1;
+      margin-top: 120px;
     }
 
     /* CORAÇÃO CADEADO */
@@ -191,22 +206,11 @@
       margin-bottom: 10px;
     }
 
-    .qr-container {
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
-
-    .qr-item img {
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      transition: transform 0.3s ease;
-    }
-
-    .qr-item img:hover {
-      transform: scale(1.08);
+    .spotify-embed {
+      margin: 20px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     .signature {
@@ -214,7 +218,6 @@
       font-style: italic;
       font-size: 1.1rem;
     }
-  
 
     /* AJUSTES PARA CELULAR */
     @media (max-width: 600px) {
@@ -241,20 +244,6 @@
         padding: 28px;
         margin: 15px;
       }
-
-      .qr-container {
-        flex-direction: column;
-        gap: 18px;
-      }
-
-      .qr-item img {
-        width: 160px;
-        height: 160px;
-      }
-
-      .music-section h2 {
-        font-size: 1.4rem;
-      }
     }
   </style>
 </head>
@@ -264,8 +253,8 @@
     <div class="heart-lock">
       <span class="lock-icon">🔒</span>
       <h2>Cadeado do Amor</h2>
-      <p>Para desbloquear Digite a senha</p>
-      <input type="password" id="password" placeholder="******" />
+      <p>Somente quem tem a chave entra</p>
+      <input type="password" id="password" placeholder="****" />
       <button onclick="unlock()">Abrir</button>
       <div class="error" id="error">Senha incorreta… tente de novo ❤️</div>
     </div>
@@ -288,16 +277,16 @@
       Que possamos continuar escrevendo nossa história, dia após dia,
       com carinho, respeito e muito amor.
     </p>
-        <div class="music-section">
+
+    <div class="music-section">
       <h2>🎵 Músicas que me lembram você</h2>
-      <p>Escaneie os QR Codes e ouça com o coração.</p>
-      <div class="qr-container">
-        <div class="qr-item">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://open.spotify.com/intl-pt/track/43iIQbw5hx986dUEZbr3eN" alt="QR Code Música 1" />
-        </div>
-        <div class="qr-item">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://open.spotify.com/intl-pt/track/4rHZZAmHpZrA3iH5zx8frV" alt="QR Code Música 2" />
-        </div>
+
+      <div class="spotify-embed">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/43iIQbw5hx986dUEZbr3eN" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+
+      <div class="spotify-embed">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4rHZZAmHpZrA3iH5zx8frV" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </div>
 
@@ -311,31 +300,59 @@
     function unlock() {
       const password = document.getElementById('password').value;
       const error = document.getElementById('error');
-      if (password === '19/12/2025') {
+
+      if (password === '2025') {
         document.getElementById('lock').style.display = 'none';
         document.getElementById('card').style.display = 'block';
+
+        clearInterval(photoInterval);
+        clearInterval(heartInterval);
+
+        photoInterval = setInterval(createPhoto, 1800);
+        heartInterval = setInterval(createHeart, 1200);
       } else {
         error.style.display = 'block';
       }
     }
 
-    // GERADOR DE CHUVA DE CORAÇÕES
+    function createPhoto() {
+      const photo = document.createElement('img');
+      photo.classList.add('photo-rain');
+
+      const photos = [
+        'foto1.jpg',
+        'foto2.jpg',
+        'foto3.jpg'
+      ];
+
+      photo.src = photos[Math.floor(Math.random() * photos.length)];
+      photo.style.left = Math.random() * 100 + 'vw';
+      photo.style.animationDuration = Math.random() * 3 + 5 + 's';
+      const size = Math.random() * 30 + 50;
+      photo.style.width = size + 'px';
+      photo.style.height = size + 'px';
+
+      document.body.appendChild(photo);
+
+      setTimeout(() => photo.remove(), 9000);
+    }
+
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart-rain');
       heart.innerHTML = '❤';
+
       heart.style.left = Math.random() * 100 + 'vw';
       heart.style.fontSize = Math.random() * 20 + 15 + 'px';
       heart.style.animationDuration = Math.random() * 3 + 4 + 's';
-      document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 7000);
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
     }
 
-    setInterval(createHeart, 400);
+    let photoInterval = setInterval(createPhoto, 900);
+    let heartInterval = setInterval(createHeart, 500);
   </script>
 
 </body>
-</html> 
+</html>
